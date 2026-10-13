@@ -11,7 +11,7 @@ Bindet deine [Wallos](https://github.com/ellite/Wallos)-Instanz (Abo-Tracker) in
    (`/config/custom_components/wallos`) – oder das Repo als *Custom Repository* in HACS hinzufügen.
 2. Home Assistant neu starten.
 3. **Einstellungen → Geräte & Dienste → Integration hinzufügen → Wallos**.
-4. URL (z. B. `http://192.168.1.10:8282`) und API-Key eintragen
+4. URL (z. B. `http://<DEINE-SERVER-IP>:8282`) und API-Key eintragen
    (Wallos → Profil → API-Key).
 
 > Der API-Key wird von der Wallos-API als Query-Parameter übertragen – nutze nach Möglichkeit HTTPS.

@@ -19,7 +19,7 @@ Copy the folder `custom_components/wallos` to `/config/custom_components/wallos`
 **Setup**
 
 1. Go to **Settings → Devices & services → Add integration → Wallos**.
-2. Enter your Wallos URL (e.g. `http://192.168.1.10:8282`) and your API key (Wallos → Profile → API key).
+2. Enter your Wallos URL (e.g. `http://<YOUR-SERVER-IP>:8282`) and your API key (Wallos → Profile → API key).
 
 > The Wallos API transmits the API key as a query parameter – use HTTPS whenever possible.
 

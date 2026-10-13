@@ -1,7 +1,7 @@
 {
   "domain": "wallos",
   "name": "Wallos",
-  "codeowners": [],
+  "codeowners": ["@DonTodt"],
   "config_flow": true,
   "documentation": "https://github.com/DonTodt/ha-wallos",
   "issue_tracker": "https://github.com/DonTodt/ha-wallos/issues",
