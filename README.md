@@ -1,5 +1,6 @@
 **English** | [Deutsch](README.de.md)
 
+![Wallos](https://raw.githubusercontent.com/DonTodt/ha-wallos/main/custom_components/wallos/brand/icon.png)
 # Wallos – Home Assistant Integration
 
 Integrates your [Wallos](https://github.com/ellite/Wallos) instance (subscription tracker) into Home Assistant.

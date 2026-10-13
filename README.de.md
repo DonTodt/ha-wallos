@@ -1,5 +1,6 @@
 [English](README.md) | **Deutsch**
 
+![Wallos](https://raw.githubusercontent.com/DonTodt/ha-wallos/main/custom_components/wallos/brand/icon.png)
 # Wallos – Home Assistant Integration
 
 Bindet deine [Wallos](https://github.com/ellite/Wallos)-Instanz (Abo-Tracker) in Home Assistant ein.
