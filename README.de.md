@@ -7,14 +7,23 @@ Bindet deine [Wallos](https://github.com/ellite/Wallos)-Instanz (Abo-Tracker) in
 
 ## Installation
 
-1. Ordner `custom_components/wallos` in dein HA-Konfigurationsverzeichnis kopieren
-   (`/config/custom_components/wallos`) – oder das Repo als *Custom Repository* in HACS hinzufügen.
-2. Home Assistant neu starten.
-3. **Einstellungen → Geräte & Dienste → Integration hinzufügen → Wallos**.
-4. URL (z. B. `http://<DEINE-SERVER-IP>:8282`) und API-Key eintragen
-   (Wallos → Profil → API-Key).
+**HACS (empfohlen)**
+
+1. In HACS das Menü öffnen → *Benutzerdefinierte Repositories* → `https://github.com/DonTodt/ha-wallos` als Typ *Integration* hinzufügen.
+2. **Wallos** herunterladen und Home Assistant neu starten.
+
+**Manuell**
+
+Den Ordner `custom_components/wallos` nach `/config/custom_components/wallos` kopieren und Home Assistant neu starten.
+
+**Einrichtung**
+
+1. **Einstellungen → Geräte & Dienste → Integration hinzufügen → Wallos**.
+2. Wallos-URL (z. B. `http://<DEINE-SERVER-IP>:8282`) und API-Key eintragen (Wallos → Profil → API-Key).
 
 > Der API-Key wird von der Wallos-API als Query-Parameter übertragen – nutze nach Möglichkeit HTTPS.
+
+Benötigt Home Assistant 2025.1 oder neuer (das eigene Icon wird ab 2026.3 angezeigt).
 
 ## Optionen (Zahnrad der Integration)
 
@@ -45,11 +54,11 @@ Bindet deine [Wallos](https://github.com/ellite/Wallos)-Instanz (Abo-Tracker) in
 
 **Pro Abo** (eigenes Gerät, Name = Abo-Name)
 
-`Next payment` (Datum), `Days until payment`, `Price`, `Monthly cost`, `Payment due soon` (binary).
+`Nächste Zahlung` (Datum), `Tage bis zur Zahlung`, `Preis`, `Monatliche Kosten`, `Zahlung bald fällig` (Binary Sensor).
 
 Entity-IDs hängen von deiner HA-Sprache ab – bitte in der UI nachschauen.
 
-## Dashboard-Beispiele
+## Dashboard-Beispiel
 
 ```yaml
 type: vertical-stack
@@ -108,7 +117,8 @@ triggers:
 
 ## Hinweise
 
-* Monatskosten werden aus Preis × Zyklus (Tage/Wochen/Monate/Jahre) × Frequenz berechnet.
+* Monatskosten werden aus Preis, Zyklus (Tage/Wochen/Monate/Jahre) und Frequenz auf einen Durchschnittsmonat umgerechnet
+  (z. B. 60 € alle 2 Monate → 30 €/Monat).
   Summen sind nur sinnvoll, wenn „Preise umrechnen“ aktiv ist (sonst werden unterschiedliche Währungen addiert).
 * Wallos verschiebt `next_payment` selbst (Cron). Ist ein Abo ohne Auto-Renew überfällig, wird `days_until` negativ.
 * Wird ein Abo in Wallos gelöscht, wird das zugehörige Gerät automatisch entfernt.
