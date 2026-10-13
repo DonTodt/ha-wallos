@@ -1,58 +1,69 @@
+**English** | [Deutsch](README.de.md)
+
 # Wallos – Home Assistant Integration
 
-Bindet deine [Wallos](https://github.com/ellite/Wallos)-Instanz (Abo-Tracker) in Home Assistant ein.
+Integrates your [Wallos](https://github.com/ellite/Wallos) instance (subscription tracker) into Home Assistant.
 
 ## Installation
 
-1. Ordner `custom_components/wallos` in dein HA-Konfigurationsverzeichnis kopieren
-   (`/config/custom_components/wallos`) – oder das Repo als *Custom Repository* in HACS hinzufügen.
-2. Home Assistant neu starten.
-3. **Einstellungen → Geräte & Dienste → Integration hinzufügen → Wallos**.
-4. URL (z. B. `http://192.168.1.10:8282`) und API-Key eintragen
-   (Wallos → Profil → API-Key).
+**HACS (recommended)**
 
-> Der API-Key wird von der Wallos-API als Query-Parameter übertragen – nutze nach Möglichkeit HTTPS.
+1. In HACS, open the menu → *Custom repositories* → add `https://github.com/DonTodt/ha-wallos` as type *Integration*.
+2. Download **Wallos** and restart Home Assistant.
 
-## Optionen (Zahnrad der Integration)
+**Manual**
 
-| Option | Standard | Bedeutung |
+Copy the folder `custom_components/wallos` to `/config/custom_components/wallos` and restart Home Assistant.
+
+**Setup**
+
+1. Go to **Settings → Devices & services → Add integration → Wallos**.
+2. Enter your Wallos URL (e.g. `http://192.168.1.10:8282`) and your API key (Wallos → Profile → API key).
+
+> The Wallos API transmits the API key as a query parameter – use HTTPS whenever possible.
+
+Requires Home Assistant 2025.1 or newer (custom brand icons are shown from 2026.3).
+
+## Options (gear icon of the integration)
+
+| Option | Default | Meaning |
 |---|---|---|
-| Update-Intervall | 30 min | Wie oft Wallos abgefragt wird |
-| Preise umrechnen | an | Ruft die Abos mit `convert_currency=true` ab → alle Summen in Hauptwährung |
-| „Bald fällig“-Schwelle | 7 Tage | Für `Zahlung bald fällig` |
-| Entitäten pro Abo | an | Je Abo ein Gerät mit eigenen Entitäten |
+| Update interval | 30 min | How often Wallos is polled |
+| Convert prices | on | Fetches subscriptions with `convert_currency=true` → all totals in your main currency |
+| "Due soon" threshold | 7 days | Used by `Payment due soon` |
+| Entities per subscription | on | Creates a device with its own entities for each subscription |
 
-## Entitäten
+## Entities
 
-**Gerät „Wallos“**
+**Device "Wallos"**
 
-| Entität | Beschreibung |
+| Entity | Description |
 |---|---|
-| `sensor.wallos_active_subscriptions` | Anzahl aktiver Abos, Attribut `subscriptions` = Liste (Name, Preis, nächste Zahlung, Tage, Kategorie …) |
-| `sensor.wallos_inactive_subscriptions` | Anzahl inaktiver/gekündigter Abos |
-| `sensor.wallos_monthly_cost` | Normalisierte monatliche Gesamtkosten (Attribut `by_category`) |
-| `sensor.wallos_yearly_cost` | Normalisierte Jahreskosten |
-| `sensor.wallos_cost_this_month` | Tatsächliche Kosten im aktuellen Monat (`get_monthly_cost`) |
-| `sensor.wallos_budget_remaining` | Budget (aus Wallos-Profil) minus monatliche Kosten |
-| `sensor.wallos_next_payment` | Datum der nächsten Zahlung |
-| `sensor.wallos_next_subscription` | Name des nächsten fälligen Abos |
-| `sensor.wallos_payments_due_soon` | Anzahl bald fälliger Zahlungen (Attribut `subscriptions`) |
-| `binary_sensor.wallos_payment_due_soon` | An, wenn mind. ein Abo bald fällig ist |
-| `calendar.wallos_payments` | Alle Zahlungen als Kalender (zukünftige Wiederholungen werden berechnet) |
+| `sensor.wallos_active_subscriptions` | Number of active subscriptions; attribute `subscriptions` = list (name, price, next payment, days, category …) |
+| `sensor.wallos_inactive_subscriptions` | Number of inactive/cancelled subscriptions |
+| `sensor.wallos_monthly_cost` | Normalized total monthly cost (attribute `by_category`) |
+| `sensor.wallos_yearly_cost` | Normalized yearly cost |
+| `sensor.wallos_cost_this_month` | Actual cost for the current month (`get_monthly_cost`) |
+| `sensor.wallos_budget_remaining` | Budget (from your Wallos profile) minus monthly cost |
+| `sensor.wallos_next_payment` | Date of the next payment |
+| `sensor.wallos_next_subscription` | Name of the next subscription due |
+| `sensor.wallos_payments_due_soon` | Number of payments due soon (attribute `subscriptions`) |
+| `binary_sensor.wallos_payment_due_soon` | On if at least one subscription is due soon |
+| `calendar.wallos_payments` | All payments as a calendar (future recurrences are projected) |
 
-**Pro Abo** (eigenes Gerät, Name = Abo-Name)
+**Per subscription** (own device, named after the subscription)
 
-`Next payment` (Datum), `Days until payment`, `Price`, `Monthly cost`, `Payment due soon` (binary).
+`Next payment` (date), `Days until payment`, `Price`, `Monthly cost`, `Payment due soon` (binary).
 
-Entity-IDs hängen von deiner HA-Sprache ab – bitte in der UI nachschauen.
+Entity IDs depend on your Home Assistant language – please check them in the UI.
 
-## Dashboard-Beispiele
+## Dashboard example
 
 ```yaml
 type: vertical-stack
 cards:
   - type: entities
-    title: Abos
+    title: Subscriptions
     entities:
       - sensor.wallos_active_subscriptions
       - sensor.wallos_monthly_cost
@@ -61,22 +72,22 @@ cards:
       - sensor.wallos_next_subscription
       - sensor.wallos_next_payment
   - type: markdown
-    title: Alle Abos
+    title: All subscriptions
     content: >
       {% for s in state_attr('sensor.wallos_active_subscriptions', 'subscriptions') %}
-      - **{{ s.name }}** – {{ s.price }} {{ s.currency }} · {{ s.next_payment }} (in {{ s.days_until }} Tagen)
+      - **{{ s.name }}** – {{ s.price }} {{ s.currency }} · {{ s.next_payment }} (in {{ s.days_until }} days)
       {% endfor %}
   - type: calendar
     entities:
       - calendar.wallos_payments
 ```
 
-## Automations-Beispiele
+## Automation examples
 
-Täglich um 9 Uhr eine Zusammenfassung der bald fälligen Zahlungen:
+Daily summary at 9:00 of payments that are due soon:
 
 ```yaml
-alias: Wallos – Zahlungen bald fällig
+alias: Wallos – payments due soon
 triggers:
   - trigger: time
     at: "09:00:00"
@@ -87,14 +98,14 @@ conditions:
 actions:
   - action: notify.notify
     data:
-      title: Abo-Zahlungen
+      title: Subscription payments
       message: >
         {% for s in state_attr('binary_sensor.wallos_payment_due_soon', 'subscriptions') %}
         {{ s.name }}: {{ s.price }} {{ s.currency }} ({{ s.next_payment }})
         {% endfor %}
 ```
 
-Einzelnes Abo, 3 Tage vorher:
+A single subscription, 3 days before payment:
 
 ```yaml
 triggers:
@@ -103,9 +114,9 @@ triggers:
     below: 4
 ```
 
-## Hinweise
+## Notes
 
-* Monatskosten werden aus Preis × Zyklus (Tage/Wochen/Monate/Jahre) × Frequenz berechnet.
-  Summen sind nur sinnvoll, wenn „Preise umrechnen“ aktiv ist (sonst werden unterschiedliche Währungen addiert).
-* Wallos verschiebt `next_payment` selbst (Cron). Ist ein Abo ohne Auto-Renew überfällig, wird `days_until` negativ.
-* Wird ein Abo in Wallos gelöscht, wird das zugehörige Gerät automatisch entfernt.
+* Monthly cost is calculated as price × cycle (days/weeks/months/years) × frequency.
+  Totals are only meaningful if "Convert prices" is enabled (otherwise different currencies are added up).
+* Wallos advances `next_payment` itself (cron). If a subscription without auto-renew is overdue, `days_until` becomes negative.
+* If a subscription is deleted in Wallos, its device is removed automatically.
