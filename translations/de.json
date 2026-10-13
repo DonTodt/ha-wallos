@@ -1,0 +1,64 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Wallos verbinden",
+        "description": "URL deiner Wallos-Instanz und dein persönlicher API-Key (Wallos > Profil > API-Key).",
+        "data": {
+          "url": "Wallos-URL",
+          "api_key": "API-Key",
+          "verify_ssl": "SSL-Zertifikat prüfen"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Wallos neu authentifizieren",
+        "data": { "api_key": "API-Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zu Wallos fehlgeschlagen. URL prüfen.",
+      "invalid_auth": "Ungültiger API-Key.",
+      "unknown": "Unerwarteter Fehler."
+    },
+    "abort": {
+      "already_configured": "Dieser Wallos-Account ist bereits eingerichtet.",
+      "reauth_successful": "Neu-Authentifizierung erfolgreich."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "scan_interval": "Aktualisierungsintervall",
+          "convert_currency": "Preise in Hauptwährung umrechnen (empfohlen)",
+          "due_soon_days": "Schwelle für \"bald fällig\" (Tage)",
+          "per_subscription_entities": "Entitäten für jedes Abo erstellen"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "active_subscriptions": { "name": "Aktive Abos" },
+      "inactive_subscriptions": { "name": "Inaktive Abos" },
+      "monthly_cost": { "name": "Monatliche Kosten" },
+      "yearly_cost": { "name": "Jährliche Kosten" },
+      "current_month_cost": { "name": "Kosten diesen Monat" },
+      "budget_remaining": { "name": "Restbudget" },
+      "next_payment": { "name": "Nächste Zahlung" },
+      "next_payment_subscription": { "name": "Nächstes Abo" },
+      "due_soon": { "name": "Bald fällige Zahlungen" },
+      "sub_next_payment": { "name": "Nächste Zahlung" },
+      "sub_days_until": { "name": "Tage bis zur Zahlung" },
+      "sub_price": { "name": "Preis" },
+      "sub_monthly_cost": { "name": "Monatliche Kosten" }
+    },
+    "binary_sensor": {
+      "payment_due_soon": { "name": "Zahlung bald fällig" },
+      "sub_due_soon": { "name": "Zahlung bald fällig" }
+    },
+    "calendar": {
+      "payments": { "name": "Zahlungen" }
+    }
+  }
+}

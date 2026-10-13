@@ -1,0 +1,64 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect Wallos",
+        "description": "Enter the URL of your Wallos instance and your personal API key (Wallos > Profile > API key).",
+        "data": {
+          "url": "Wallos URL",
+          "api_key": "API key",
+          "verify_ssl": "Verify SSL certificate"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate Wallos",
+        "data": { "api_key": "API key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect to Wallos. Check the URL.",
+      "invalid_auth": "Invalid API key.",
+      "unknown": "Unexpected error."
+    },
+    "abort": {
+      "already_configured": "This Wallos account is already configured.",
+      "reauth_successful": "Re-authentication successful."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "scan_interval": "Update interval",
+          "convert_currency": "Convert prices to main currency (recommended)",
+          "due_soon_days": "\"Due soon\" threshold (days)",
+          "per_subscription_entities": "Create entities for every subscription"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "active_subscriptions": { "name": "Active subscriptions" },
+      "inactive_subscriptions": { "name": "Inactive subscriptions" },
+      "monthly_cost": { "name": "Monthly cost" },
+      "yearly_cost": { "name": "Yearly cost" },
+      "current_month_cost": { "name": "Cost this month" },
+      "budget_remaining": { "name": "Budget remaining" },
+      "next_payment": { "name": "Next payment" },
+      "next_payment_subscription": { "name": "Next subscription" },
+      "due_soon": { "name": "Payments due soon" },
+      "sub_next_payment": { "name": "Next payment" },
+      "sub_days_until": { "name": "Days until payment" },
+      "sub_price": { "name": "Price" },
+      "sub_monthly_cost": { "name": "Monthly cost" }
+    },
+    "binary_sensor": {
+      "payment_due_soon": { "name": "Payment due soon" },
+      "sub_due_soon": { "name": "Payment due soon" }
+    },
+    "calendar": {
+      "payments": { "name": "Payments" }
+    }
+  }
+}
