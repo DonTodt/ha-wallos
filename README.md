@@ -117,7 +117,8 @@ triggers:
 
 ## Notes
 
-* Monthly cost is calculated as price × cycle (days/weeks/months/years) × frequency.
+* Monthly cost is normalized to an average month from price, cycle (days/weeks/months/years) and frequency
+  (e.g. 60 € every 2 months → 30 €/month).
   Totals are only meaningful if "Convert prices" is enabled (otherwise different currencies are added up).
 * Wallos advances `next_payment` itself (cron). If a subscription without auto-renew is overdue, `days_until` becomes negative.
 * If a subscription is deleted in Wallos, its device is removed automatically.
