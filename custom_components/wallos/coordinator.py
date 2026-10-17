@@ -63,6 +63,37 @@ class WallosCoordinator(DataUpdateCoordinator[WallosData]):
             configuration_url=self.config_entry.data[CONF_URL],
         )
 
+    @callback
+    def ensure_hub_device(self) -> dr.DeviceEntry:
+        """Create (or update) the hub device and return it."""
+        return dr.async_get(self.hass).async_get_or_create(
+            config_entry_id=self.config_entry.entry_id,
+            identifiers={(DOMAIN, self.config_entry.entry_id)},
+            name="Wallos",
+            manufacturer="Wallos",
+            model="Subscription Tracker",
+            configuration_url=self.config_entry.data[CONF_URL],
+        )
+
+    @callback
+    def ensure_subscription_device(self, sub: WallosSubscription) -> dr.DeviceEntry:
+        """Create (or update) the device of a subscription, linked to the hub.
+
+        Uses `via_device_id` (device registry id) instead of the deprecated
+        `via_device` identifier tuple.
+        """
+        hub = self.ensure_hub_device()
+        url = sub.url if sub.url and sub.url.startswith(("http://", "https://")) else None
+        return dr.async_get(self.hass).async_get_or_create(
+            config_entry_id=self.config_entry.entry_id,
+            identifiers={(DOMAIN, f"{self.config_entry.entry_id}_sub_{sub.id}")},
+            name=sub.name,
+            manufacturer="Wallos",
+            model=sub.category or "Subscription",
+            via_device_id=hub.id,
+            configuration_url=url,
+        )
+
     async def _async_update_data(self) -> WallosData:
         try:
             user = await self.client.get_user()
