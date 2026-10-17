@@ -27,14 +27,11 @@ class WallosSubscriptionEntity(WallosEntity):
         self._sub_id = sub_id
         sub = coordinator.data.subscriptions[sub_id]
         entry_id = coordinator.config_entry.entry_id
-        url = sub.url if sub.url and sub.url.startswith(("http://", "https://")) else None
+        # Create the device up front so it can reference the hub via `via_device_id`
+        # (the `via_device` key in DeviceInfo is deprecated since HA 2026.8).
+        coordinator.ensure_subscription_device(sub)
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, f"{entry_id}_sub_{sub_id}")},
-            name=sub.name,
-            manufacturer="Wallos",
-            model=sub.category or "Subscription",
-            via_device=(DOMAIN, entry_id),
-            configuration_url=url,
         )
 
     @property
